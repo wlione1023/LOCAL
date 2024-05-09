@@ -1,0 +1,41 @@
+import os
+import webbrowser
+import datetime
+import time
+import ctypes
+
+# 要打開的網頁URL
+url = "https://docs.google.com/forms/d/e/1FAIpQLScMyMthN4g1KVxdZjVExDWIey9I5dt7954ET4bJyocaWCowNg/viewform"
+
+# 檢查是否是工作日
+def is_weekday():
+    today = datetime.datetime.today()
+    return 0 <= today.weekday() <= 4
+
+# 檢查是否在指定時間範圍內
+def is_between_time(start_time, end_time):
+    now = datetime.datetime.now().time()
+    return start_time <= now <= end_time
+
+# 打開指定網頁
+def open_webpage(url):
+    webbrowser.open(url, new=2)
+
+# 彈出詢問對話框
+def ask_confirmation():
+    confirmation = ctypes.windll.user32.MessageBoxW(0, "是否簽退完成？", "簽退", 1)
+    return confirmation == 1  # 如果選擇是，返回True
+
+# 主程式
+def main():
+    while True:
+        if is_weekday() and is_between_time(datetime.time(17, 50), datetime.time(19, 0)):
+            open_webpage(url)
+            if ask_confirmation():
+                break
+        # 等待一分鐘後重新檢查
+        print("繼續上班")
+        time.sleep(300)
+
+if __name__ == "__main__":
+    main()
