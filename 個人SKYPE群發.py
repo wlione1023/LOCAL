@@ -1,9 +1,9 @@
 from skpy import Skype, SkypeChats
 import time
 
-sk = Skype("5ggcs03@5gg.win", "5ggwin123")
+sk = Skype("帳號", "密碼")
 skc = SkypeChats(sk)
-ct_name = ["群發測試", "test1", "test2"]
+ct_name = ["群組名稱", "群組名稱", "群組名稱"]
 
 
 def print_recent_chats(skc):
