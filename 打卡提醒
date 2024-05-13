@@ -21,21 +21,40 @@ def is_between_time(start_time, end_time):
 def open_webpage(url):
     webbrowser.open(url, new=2)
 
-# 彈出詢問對話框
+# 彈出詢問對話框簽退完成
 def ask_confirmation():
     confirmation = ctypes.windll.user32.MessageBoxW(0, "是否簽退完成？", "簽退", 1)
     return confirmation == 1  # 如果選擇是，返回True
 
-# 主程式
+# 彈出詢問對話框打卡完成
+def ask_confirmation2():
+    confirmation = ctypes.windll.user32.MessageBoxW(0, "是否簽到完成？", "簽到", 1)
+    return confirmation == 1  # 如果選擇是，返回True
+
+# 上下班簽退確認
 def main():
     while True:
-        if is_weekday() and is_between_time(datetime.time(17, 50), datetime.time(19, 0)):
-            open_webpage(url)
-            if ask_confirmation():
-                break
-        # 等待一分鐘後重新檢查
-        print("繼續上班")
-        time.sleep(300)
+        if is_weekday():
+            if is_between_time(datetime.time(8, 45), datetime.time(9, 0)):
+                open_webpage(url)
+                if ask_confirmation2():
+                    break
+                else:
+                    print(datetime.datetime.now().strftime("%m/%d %H:%M:%S"), "- 未完成簽到")
+                    time.sleep(60)  # 等待一分鐘後重新檢查
+            elif is_between_time(datetime.time(17, 45), datetime.time(18, 30)):
+                open_webpage(url)
+                if ask_confirmation():
+                    break
+                else:
+                    print(datetime.datetime.now().strftime("%m/%d %H:%M:%S"), "- 未完成簽退")
+                    time.sleep(60)  # 等待一分鐘後重新檢查
+            else:
+                print(datetime.datetime.now().strftime("%m/%d %H:%M:%S"), "- 不在簽到簽退時間範圍內")
+                time.sleep(60)  # 等待一分鐘後重新檢查
+        else:
+            print(datetime.datetime.now().strftime("%m/%d %H:%M:%S"), "- 今天不是工作日")
+            time.sleep(3600)  # 等待一小時後重新檢查
 
 if __name__ == "__main__":
     main()
