@@ -11,6 +11,8 @@ token ="6050558993:AAG2bVi_nn1FR7LujWTg3uGZmDh-CBeSsW4"
 id="-1001826089044"
 message="test message"
 url=f"https://api.telegram.org/bot{token}/getUpdates"
+logging.basicConfig(level=logging.INFO)
+
 
 #列出目前機器人所在的群組ID
 async def main():
@@ -39,8 +41,16 @@ def write_in():
             print("月初才會寫入")
             time.sleep(24 * 60 * 60)  # 暂停一天
         
+# 发送消息
+async def send_message(chat_id, message):
+    bot = Bot(token=token)
+    try:
+        await bot.send_message(chat_id=chat_id, text=message)
+        logging.info(f"Message sent successfully to chat_id: {chat_id}")
+    except TelegramError as e:
+        logging.error(f"An error occurred while sending message to chat_id {chat_id}: {e}")
 
 if __name__ == "__main__":
-#     asyncio.run(main())
-
-    write_in()
+    asyncio.run(main())
+    asyncio.run(send_message("-1001826089044", message))
+    # write_in()
