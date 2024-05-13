@@ -7,13 +7,28 @@ from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandl
 import datetime
 import time
 
+#機器人token
 token ="6050558993:AAG2bVi_nn1FR7LujWTg3uGZmDh-CBeSsW4"
+#群組id
 id="-1001826089044"
-message="test message"
-url=f"https://api.telegram.org/bot{token}/getUpdates"
-logging.basicConfig(level=logging.INFO)
+#url=f"https://api.telegram.org/bot{token}/getUpdates"
 
 
+
+# 將特定檔案內容抓出
+def get_message(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            message = file.read()
+        return message
+    
+    except FileNotFoundError:
+        print(f"File not found at path: {file_path}")
+        return None    
+
+message_path = "C:\go2\message.txt"
+message = get_message(message_path)
+    
 #列出目前機器人所在的群組ID
 async def main():
     bot = Bot(token=token)
@@ -41,6 +56,8 @@ def write_in():
             print("月初才會寫入")
             time.sleep(24 * 60 * 60)  # 暂停一天
         
+    
+
 # 发送消息
 async def send_message(chat_id, message):
     bot = Bot(token=token)
